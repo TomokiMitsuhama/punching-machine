@@ -19,10 +19,10 @@ window.onload = function(){
 
     const addCount = function () {
         clickcount++;
-        soundArray[0].start(0);
-        soundArray[0] = context.createBufferSource();
-        soundArray[0].buffer = bufferList[0];
-        soundArray[0].connect(context.destination);
+        const playSource = context.createBufferSource();
+        playSource.buffer = globalBufferList[0];
+        playSource.connect(context.destination);
+        playSource.start(0);
     };
 
     const gameready = function () {
@@ -107,8 +107,8 @@ window.onload = function(){
     }
 
     // 音設定
-    var soundArray = [];
-    var backgroundArray = [];
+    let soundArray = [];
+    let globalBufferList = [];
     function BufferLoader(context, urlList, callback) {
         this.context = context;
         this.urlList = urlList;
@@ -160,6 +160,7 @@ window.onload = function(){
     );
     bufferLoader.load();
     function finishedLoading(bufferList) {
+        globalBufferList = bufferList;
         for( var i = 0; i < bufferList.length ; i++ ) {
           var source = context.createBufferSource();
           source.buffer = bufferList[i];
